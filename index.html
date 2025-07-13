@@ -166,20 +166,20 @@
         document.addEventListener('DOMContentLoaded', () => {
             // --- DATA ---
             const orders = [
-                { id: 'GD-415', itemsCount: 3, status: 'New', 
+                { id: 'GD-415', itemsCount: 3, status: 'New', viewed: false,
                   items: [
                       { name: 'All-in-One Printer', price: 129.99, quantity: 1 },
                       { name: 'A4 Paper Ream (500 Sheets)', price: 7.50, quantity: 1 },
                       { name: 'Black Ink Cartridge', price: 24.99, quantity: 1 },
                   ]
                 },
-                { id: 'GD-652', itemsCount: 2, status: 'New',
+                { id: 'GD-652', itemsCount: 2, status: 'New', viewed: false,
                   items: [ 
                       { name: 'Prepaid 5G SIM Card', price: 15.00, quantity: 1 },
                       { name: 'USB-C to HDMI Adapter', price: 22.50, quantity: 1 }
                   ]
                 },
-                { id: 'GD-866', itemsCount: 4, status: 'New',
+                { id: 'GD-866', itemsCount: 4, status: 'New', viewed: false,
                   items: [ 
                       { name: 'Wireless Mouse', price: 35.00, quantity: 1 },
                       { name: 'Mechanical Keyboard', price: 89.99, quantity: 1 },
@@ -187,17 +187,17 @@
                       { name: 'USB Hub 4-Port', price: 15.50, quantity: 1 },
                   ]
                 },
-                { id: 'GD-935', itemsCount: 1, status: 'New',
+                { id: 'GD-935', itemsCount: 1, status: 'New', viewed: false,
                   items: [ { name: 'Cat6 Ethernet Cable (5m)', price: 9.99, quantity: 1 } ]
                 },
-                { id: 'GD-991', itemsCount: 3, status: 'New',
+                { id: 'GD-991', itemsCount: 3, status: 'New', viewed: false,
                   items: [ 
                       { name: 'Portable SSD (1TB)', price: 99.99, quantity: 1 },
                       { name: 'Screen Cleaning Kit', price: 12.00, quantity: 1 },
                       { name: 'Laptop Stand', price: 25.00, quantity: 1 },
                   ]
                 },
-                 { id: 'GD-230', itemsCount: 2, status: 'New',
+                 { id: 'GD-230', itemsCount: 2, status: 'New', viewed: false,
                   items: [ 
                       { name: 'Power Strip with USB', price: 28.75, quantity: 1 },
                       { name: 'HDMI Cable (2m)', price: 14.50, quantity: 1 },
@@ -219,18 +219,25 @@
 
             // --- FUNCTIONS ---
 
-            // Function to create an order card HTML
+            // Function to create an order card HTML based on its "viewed" state
             function createOrderCard(order) {
+                const buttonHtml = order.viewed
+                    ? `<button class="request-ge-btn bg-green-600 text-white font-semibold py-2 px-4 rounded-full text-sm hover:bg-green-700 transition-colors">
+                           Request GrabExpress
+                       </button>`
+                    : `<button class="view-order-btn bg-teal-50 text-teal-600 font-semibold py-2 px-4 rounded-full text-sm hover:bg-teal-100 transition-colors">
+                           View Order
+                       </button>`;
+
                 return `
-                    <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-200 cursor-pointer hover:border-green-400 transition-all" data-order-id="${order.id}">
+                    <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-200" data-order-id="${order.id}">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center space-x-3">
                                 <h2 class="text-lg font-bold text-gray-800">${order.id}</h2>
                                 <span class="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-md">${order.status.toUpperCase()}</span>
                             </div>
-                            <button class="view-order-btn bg-teal-50 text-teal-600 font-semibold py-2 px-4 rounded-full text-sm hover:bg-teal-100 transition-colors">
-                                View Order
-                            </button>
+                            <!-- The button is now dynamically generated -->
+                            ${buttonHtml}
                         </div>
                         <div class="mt-2 text-sm text-gray-500">
                             <p>${order.itemsCount} ${order.itemsCount > 1 ? 'items' : 'item'}</p>
@@ -248,6 +255,9 @@
             function showDetails(orderId) {
                 const order = orders.find(o => o.id === orderId);
                 if (!order) return;
+
+                // Mark the order as "viewed" to change its state
+                order.viewed = true;
 
                 // Populate header
                 detailsOrderId.textContent = order.id;
@@ -283,10 +293,14 @@
                 detailsScreen.classList.add('hidden');
                 detailsScreen.classList.remove('flex');
                 ordersScreen.classList.remove('hidden');
+                
+                // Re-populate the order list to reflect the button change
+                populateOrders();
             }
 
             // --- EVENT LISTENERS ---
             orderListContainer.addEventListener('click', (e) => {
+                // Clicking anywhere on the card (including the button) will show details
                 const card = e.target.closest('[data-order-id]');
                 if (card) {
                     showDetails(card.dataset.orderId);
@@ -294,7 +308,14 @@
             });
 
             backButton.addEventListener('click', showOrdersList);
-            cancelOrderButton.addEventListener('click', showOrdersList); // For demo, cancel also returns to list
+            cancelOrderButton.addEventListener('click', () => {
+                // For the demo, cancel also returns to the list without changing the state
+                detailsScreen.classList.add('hidden');
+                detailsScreen.classList.remove('flex');
+                ordersScreen.classList.remove('hidden');
+                // We don't re-populate here, so the "View Order" button won't change to "Request GE"
+                // To have it change, we would call showOrdersList() instead.
+            });
 
             // --- INITIALIZATION ---
             populateOrders();
