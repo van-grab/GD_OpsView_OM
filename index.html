@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grab Order Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        // Duxton Brand Colors
+                        'duxton-brand-primary': '#00b14f',
+                        'duxton-brand-primary-bold': '#00804a',
+                        'duxton-brand-primary-soft': '#b1eaba',
+                        'duxton-brand-primary-softest': '#d9fcde',
+                        
+                        // Duxton Status Colors
+                        'duxton-status-alert': '#d42e1c',
+                        'duxton-status-positive': '#00b14f',
+                        'duxton-status-neutral': '#707070',
+                        
+                        // Duxton Background Colors
+                        'duxton-bg-default': '#ffffff',
+                        'duxton-bg-alt': '#f5f5f5',
+                        
+                        // Duxton Content Colors
+                        'duxton-content-default': '#1a1a1a',
+                        'duxton-content-subtle': '#3d3d3d',
+                        'duxton-content-dim': '#707070',
+                        'duxton-content-disabled': '#bfbfbf',
+                        'duxton-content-on-brand': '#ffffff',
+                    },
+                    fontFamily: {
+                        'duxton-heading': ['Grab Community Solid', 'Inter', 'system-ui', 'sans-serif'],
+                        'duxton-body': ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    fontSize: {
+                        // Duxton Typography Scale
+                        'duxton-heading-01': ['40px', { lineHeight: '1.2', fontWeight: '700' }],
+                        'duxton-heading-02': ['32px', { lineHeight: '1.25', fontWeight: '700' }],
+                        'duxton-heading-03': ['24px', { lineHeight: '1.3334', fontWeight: '700' }],
+                        'duxton-heading-04': ['20px', { lineHeight: '1.4', fontWeight: '700' }],
+                        'duxton-heading-05': ['18px', { lineHeight: '1.4445', fontWeight: '700' }],
+                        'duxton-body-01': ['16px', { lineHeight: '1.5', fontWeight: '400' }],
+                        'duxton-body-01-bolder': ['16px', { lineHeight: '1.5', fontWeight: '600' }],
+                        'duxton-body-02': ['14px', { lineHeight: '1.4286', fontWeight: '400' }],
+                        'duxton-body-02-bolder': ['14px', { lineHeight: '1.4286', fontWeight: '600' }],
+                        'duxton-callout-01': ['16px', { lineHeight: '1.5', fontWeight: '600' }],
+                        'duxton-callout-02': ['14px', { lineHeight: '1.4286', fontWeight: '600' }],
+                        'duxton-callout-03': ['12px', { lineHeight: '1.3334', fontWeight: '600' }],
+                        'duxton-metadata-01': ['12px', { lineHeight: '1.3334', fontWeight: '400' }],
+                        'duxton-metadata-02': ['10px', { lineHeight: '1.2', fontWeight: '400' }],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Load Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    
+    <!-- Load Grab Community Fonts -->
+    <style>
+        @font-face {
+            font-family: 'Grab Community Solid';
+            src: url('https://font-snapshots-bb4000.pages.myteksi.net/grab-community-solid/en/static/web/normal/regular.eot');
+            src: url('https://font-snapshots-bb4000.pages.myteksi.net/grab-community-solid/en/static/web/normal/regular.woff') format('woff'),
+                 url('https://font-snapshots-bb4000.pages.myteksi.net/grab-community-solid/en/static/ttf/normal/regular.ttf') format('truetype');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+        
+        @font-face {
+            font-family: 'Grab Community Solid';
+            src: url('https://font-snapshots-bb4000.pages.myteksi.net/grab-community-solid/en/static/web/normal/bold.woff') format('woff'),
+                 url('https://font-snapshots-bb4000.pages.myteksi.net/grab-community-solid/en/static/ttf/normal/bold.ttf') format('truetype');
+            font-weight: 700;
+            font-style: normal;
+            font-display: swap;
+        }
+        
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
+        }
+        
+        .duxton-shadow-card {
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+        
+        .duxton-shadow-button {
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+        
+        .duxton-shadow-elevated {
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        }
+        
+        .tab-active {
+            position: relative;
+        }
+        
+        .tab-active::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: #00b14f;
+            border-radius: 2px;
+        }
+        
+        /* Duxton component styles */
+        .duxton-card {
+            background: #ffffff;
+            border-radius: 16px;
+            border: 1px solid rgba(0, 0, 0, 0.04);
+        }
+        
+        .duxton-button-primary {
+            background: #00b14f;
+            color: #ffffff;
+            font-weight: 600;
+            border-radius: 16px;
+            transition: all 0.2s ease;
+        }
+        
+        .duxton-button-primary:hover {
+            background: #00804a;
+        }
+        
+        .duxton-button-secondary {
+            background: #ffffff;
+            color: #00b14f;
+            font-weight: 600;
+            border: 1px solid #00b14f;
+            border-radius: 16px;
+            transition: all 0.2s ease;
+        }
+        
+        .duxton-button-secondary:hover {
+            background: #d9fcde;
+        }
+        
+        .duxton-text-heading {
+            font-family: 'Grab Community Solid', 'Inter', system-ui, sans-serif;
+        }
+        
+        .duxton-text-body {
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-duxton-bg-alt">
+
+    <!-- Mobile App Container -->
+    <div class="mx-auto max-w-sm h-screen bg-duxton-bg-default flex flex-col relative overflow-hidden">
+
+        <!-- Orders List Screen -->
+        <div id="orders-screen" class="flex flex-col h-full">
+            <!-- Status Bar -->
+            <div class="flex justify-between items-center px-4 pt-3 pb-1 text-sm font-medium text-duxton-content-default bg-duxton-bg-default">
+                <span class="duxton-text-body">6:29</span>
+                <div class="flex items-center space-x-1 text-duxton-content-default">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/></svg>
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M17.778 8.222c-4.296-4.296-11.26-4.296-15.556 0A1 1 0 01.808 6.808c5.076-5.077 13.308-5.077 18.384 0a1 1 0 01-1.414 1.414zM14.95 11.05a7 7 0 00-9.9 0 1 1 0 01-1.414-1.414 9 9 0 0112.728 0 1 1 0 01-1.414 1.414zM12.12 13.88a3 3 0 00-4.242 0 1 1 0 01-1.415-1.415 5 5 0 017.072 0 1 1 0 01-1.415 1.415zM9 16a1 1 0 011-1h.01a1 1 0 110 2H10a1 1 0 01-1-1z" clip-rule="evenodd"/></svg>
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M2 5a2 2 0 012-2h8a2 2 0 012 2v10a2 2 0 002 2H4a2 2 0 01-2-2V5zm3 1h6v4H5V6zm6 6H5v2h6v-2z" clip-rule="evenodd"/></svg>
+                    <span class="duxton-text-body">91%</span>
+                    <div class="w-6 h-3 border border-duxton-content-default rounded-sm relative">
+                        <div class="absolute inset-0.5 bg-duxton-content-default rounded-sm" style="width: 85%;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Header -->
+            <header class="px-4 py-4 bg-duxton-bg-default">
+                <div class="flex items-center justify-between">
+                    <h1 class="duxton-text-heading text-duxton-heading-02 text-duxton-content-default">Orders</h1>
+                    <div class="flex items-center space-x-3">
+                        <button class="flex items-center space-x-2 px-4 py-2 bg-duxton-bg-default border border-gray-200 rounded-full text-duxton-body-02 font-medium">
+                            <span class="w-2 h-2 bg-duxton-brand-primary rounded-full"></span>
+                            <span class="text-duxton-content-default duxton-text-body">Normal</span>
+                            <svg class="w-4 h-4 text-duxton-content-dim" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                            </svg>
+                        </button>
+                        <button class="p-2">
+                            <svg class="w-6 h-6 text-duxton-content-dim" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Tabs -->
+            <nav class="px-4 pb-4 bg-duxton-bg-default">
+                <div class="flex items-center space-x-8">
+                    <button id="preparing-tab" class="tab-active pb-2 flex items-center space-x-2">
+                        <span class="duxton-text-heading text-duxton-callout-01 text-duxton-content-default">Preparing</span>
+                        <span id="preparing-count" class="bg-duxton-status-alert text-duxton-content-on-brand text-duxton-metadata-02 font-bold w-5 h-5 flex items-center justify-center rounded-full">5</span>
+                    </button>
+                    <button id="ready-tab" class="pb-2 duxton-text-body text-duxton-callout-01 text-duxton-content-dim flex items-center space-x-2">
+                        <span>Ready</span>
+                        <span id="ready-count" class="bg-duxton-status-alert text-duxton-content-on-brand text-duxton-metadata-02 font-bold w-5 h-5 flex items-center justify-center rounded-full hidden">0</span>
+                    </button>
+                    <button id="upcoming-tab" class="pb-2 duxton-text-body text-duxton-callout-01 text-duxton-content-dim">Upcoming</button>
+                    <button id="history-tab" class="pb-2 duxton-text-body text-duxton-callout-01 text-duxton-content-dim">History</button>
+                </div>
+            </nav>
+
+            <!-- Order List -->
+            <main id="order-list-container" class="flex-1 bg-duxton-bg-alt overflow-y-auto px-4 py-4 space-y-3 custom-scrollbar">
+                <!-- Order cards will be injected here by JavaScript -->
+            </main>
+
+            <!-- Bottom Navigation -->
+            <footer class="bg-duxton-bg-default border-t border-gray-100">
+                <div class="flex items-center justify-around py-2">
+                    <div class="text-center py-2 px-3 text-duxton-content-dim">
+                        <svg class="w-6 h-6 mx-auto mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                        </svg>
+                        <span class="duxton-text-body text-duxton-metadata-01">Home</span>
+                    </div>
+                    <div class="text-center py-2 px-3 text-duxton-brand-primary relative">
+                        <span id="bottom-nav-count" class="absolute -top-1 -right-0 bg-duxton-status-alert text-duxton-content-on-brand text-duxton-metadata-02 font-bold w-4 h-4 flex items-center justify-center rounded-full">5</span>
+                        <svg class="w-6 h-6 mx-auto mb-1" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/>
+                            <path fill-rule="evenodd" d="M4 5a2 2 0 012-2h8a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h.01a1 1 0 100-2H10zm3 0a1 1 0 000 2h.01a1 1 0 100-2H13zM7 12a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h.01a1 1 0 100-2H10zm3 0a1 1 0 100 2h.01a1 1 0 100-2H13z" clip-rule="evenodd"/>
+                        </svg>
+                        <span class="duxton-text-body text-duxton-metadata-01 font-semibold">Orders</span>
+                    </div>
+                    <div class="text-center py-2 px-3 text-duxton-content-dim">
+                        <svg class="w-6 h-6 mx-auto mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                        <span class="duxton-text-body text-duxton-metadata-01">Menu</span>
+                    </div>
+                    <div class="text-center py-2 px-3 text-duxton-content-dim">
+                        <svg class="w-6 h-6 mx-auto mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"/>
+                        </svg>
+                        <span class="duxton-text-body text-duxton-metadata-01">Finance</span>
+                    </div>
+                    <div class="text-center py-2 px-3 text-duxton-content-dim">
+                        <svg class="w-6 h-6 mx-auto mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
+                        </svg>
+                        <span class="duxton-text-body text-duxton-metadata-01">More</span>
+                    </div>
+                </div>
+            </footer>
+        </div>
+
+        <!-- Order Details Screen -->
+        <div id="details-screen" class="hidden flex-col h-full bg-duxton-bg-default">
+            <!-- Header -->
+            <header class="px-4 py-4 flex items-center space-x-4 border-b border-gray-100 bg-duxton-bg-default">
+                <button id="back-button" class="p-2 -ml-2">
+                    <svg class="w-6 h-6 text-duxton-content-default" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                    </svg>
+                </button>
+                <h1 class="duxton-text-heading text-duxton-heading-05 text-duxton-content-default">Order Details</h1>
+            </header>
+            
+            <!-- Details Content -->
+            <main class="flex-1 bg-duxton-bg-alt overflow-y-auto p-4 custom-scrollbar">
+                <div class="duxton-card p-4 duxton-shadow-card">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h2 id="details-order-id" class="duxton-text-heading text-duxton-heading-03 text-duxton-content-default mb-1">GD-415</h2>
+                            <p class="duxton-text-body text-duxton-body-02 text-duxton-content-dim">From: Tech Supply Co.</p>
+                        </div>
+                                                 <span id="details-status-badge" class="duxton-text-body text-duxton-callout-03 text-duxton-brand-primary bg-duxton-brand-primary-softest px-3 py-1 rounded-full">Preparing</span>
+                    </div>
+                    <div class="border-t border-gray-100 my-4"></div>
+                    <div id="details-items-container" class="space-y-3">
+                        <!-- Item details will be injected here -->
+                    </div>
+                    <div class="border-t border-gray-100 my-4"></div>
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-center">
+                            <span class="duxton-text-body text-duxton-body-02 text-duxton-content-dim">Subtotal</span>
+                            <span id="details-subtotal" class="duxton-text-body text-duxton-body-02-bolder text-duxton-content-default">$0.00</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="duxton-text-body text-duxton-body-02 text-duxton-content-dim">Delivery Fee</span>
+                            <span id="details-delivery-fee" class="duxton-text-body text-duxton-body-02-bolder text-duxton-content-default">$5.99</span>
+                        </div>
+                         <div class="flex justify-between items-center mt-3 pt-3 border-t border-gray-200">
+                            <span class="duxton-text-body text-duxton-body-01-bolder text-duxton-content-default">Total</span>
+                            <span id="details-total" class="duxton-text-body text-duxton-body-01-bolder text-duxton-content-default">$0.00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="duxton-card p-4 duxton-shadow-card mt-3">
+                     <h3 class="duxton-text-body text-duxton-callout-02 text-duxton-content-default mb-2">Customer</h3>
+                     <p class="duxton-text-body text-duxton-body-01-bolder text-duxton-content-default">Jane Doe</p>
+                     <p class="duxton-text-body text-duxton-body-02 text-duxton-content-dim">+1 987 654 3210</p>
+                </div>
+                
+                <!-- Cancel Button (inside scrollable area) -->
+                <div class="mt-4">
+                    <button id="cancel-order-button" class="w-full bg-duxton-bg-default text-duxton-status-alert duxton-text-body text-duxton-callout-01 py-3 rounded-2xl border border-red-200 duxton-shadow-button">
+                        Cancel Order
+                    </button>
+                </div>
+            </main>
+
+            <!-- Sticky Footer with CTAs -->
+            <footer class="p-4 bg-duxton-bg-default border-t border-gray-100 space-y-3">
+                <button class="duxton-button-primary w-full py-4 duxton-shadow-elevated duxton-text-body text-duxton-callout-01">
+                    Begin Delivery
+                </button>
+                <button class="duxton-button-secondary w-full py-4 duxton-shadow-button duxton-text-body text-duxton-callout-01">
+                    Request GrabExpress
+                </button>
+            </footer>
+        </div>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- DATA ---
+            const orders = [
+                { id: 'GD-415', itemsCount: 4, status: 'New', viewed: false, readyTime: '1', paymentMethod: 'one-time', tab: 'preparing',
+                  items: [
+                      { name: 'All-in-One Printer', price: 129.99, quantity: 1 },
+                      { name: 'A4 Paper Ream (500 Sheets)', price: 7.50, quantity: 1 },
+                      { name: 'Black Ink Cartridge', price: 24.99, quantity: 1 },
+                      { name: 'USB Cable', price: 12.99, quantity: 1 },
+                  ]
+                },
+                { id: 'GD-652', itemsCount: 1, status: 'New', viewed: false, readyTime: '1', paymentMethod: 'installment', tab: 'preparing',
+                  items: [ 
+                      { name: 'Prepaid 5G SIM Card', price: 15.00, quantity: 1 },
+                  ]
+                },
+                { id: 'GD-866', itemsCount: 6, status: 'New', viewed: false, readyTime: '2', paymentMethod: 'one-time', tab: 'preparing',
+                  items: [ 
+                      { name: 'Wireless Mouse', price: 35.00, quantity: 1 },
+                      { name: 'Mechanical Keyboard', price: 89.99, quantity: 1 },
+                      { name: 'Extended Mouse Pad', price: 19.99, quantity: 1 },
+                      { name: 'USB Hub 4-Port', price: 15.50, quantity: 1 },
+                      { name: 'Monitor Stand', price: 45.00, quantity: 1 },
+                      { name: 'Cable Management Tray', price: 18.99, quantity: 1 },
+                  ]
+                },
+                { id: 'GD-935', itemsCount: 1, status: 'New', viewed: false, readyTime: '3', paymentMethod: 'installment', tab: 'preparing',
+                  items: [ { name: 'Cat6 Ethernet Cable (5m)', price: 9.99, quantity: 1 } ]
+                },
+                { id: 'GD-991', itemsCount: 3, status: 'New', viewed: false, readyTime: '3', paymentMethod: 'installment', tab: 'preparing',
+                  items: [ 
+                      { name: 'Portable SSD (1TB)', price: 99.99, quantity: 1 },
+                      { name: 'Screen Cleaning Kit', price: 12.00, quantity: 1 },
+                      { name: 'Laptop Stand', price: 25.00, quantity: 1 },
+                  ]
+                },
+            ];
+
+            // --- STATE ---
+            let currentTab = 'preparing';
+
+            // --- ELEMENTS ---
+            const ordersScreen = document.getElementById('orders-screen');
+            const detailsScreen = document.getElementById('details-screen');
+            const orderListContainer = document.getElementById('order-list-container');
+            const backButton = document.getElementById('back-button');
+            const cancelOrderButton = document.getElementById('cancel-order-button');
+            const detailsOrderId = document.getElementById('details-order-id');
+            const detailsItemsContainer = document.getElementById('details-items-container');
+            const detailsSubtotal = document.getElementById('details-subtotal');
+            const detailsDeliveryFee = document.getElementById('details-delivery-fee');
+            const detailsTotal = document.getElementById('details-total');
+            const detailsStatusBadge = document.getElementById('details-status-badge');
+            
+            // Tab elements
+            const preparingTab = document.getElementById('preparing-tab');
+            const readyTab = document.getElementById('ready-tab');
+            const upcomingTab = document.getElementById('upcoming-tab');
+            const historyTab = document.getElementById('history-tab');
+            const preparingCount = document.getElementById('preparing-count');
+            const readyCount = document.getElementById('ready-count');
+            const bottomNavCount = document.getElementById('bottom-nav-count');
+            
+            // Action buttons in details screen
+            const beginDeliveryButton = document.querySelector('footer button.duxton-button-primary');
+            const requestGrabExpressButton = document.querySelector('footer button.duxton-button-secondary');
+
+            // --- FUNCTIONS ---
+
+            // Function to get orders for current tab
+            function getOrdersForTab(tab) {
+                return orders.filter(order => order.tab === tab);
+            }
+
+            // Function to update tab counts
+            function updateTabCounts() {
+                const preparingOrders = getOrdersForTab('preparing');
+                const readyOrders = getOrdersForTab('ready');
+                
+                preparingCount.textContent = preparingOrders.length;
+                bottomNavCount.textContent = preparingOrders.length;
+                
+                if (readyOrders.length > 0) {
+                    readyCount.textContent = readyOrders.length;
+                    readyCount.classList.remove('hidden');
+                    readyCount.classList.add('flex');
+                } else {
+                    readyCount.classList.add('hidden');
+                    readyCount.classList.remove('flex');
+                }
+            }
+
+            // Function to switch tabs
+            function switchToTab(newTab) {
+                // Remove active class from all tabs
+                const allTabs = [preparingTab, readyTab, upcomingTab, historyTab];
+                allTabs.forEach(tab => {
+                    tab.classList.remove('tab-active');
+                    tab.classList.add('duxton-text-body', 'text-duxton-content-dim');
+                    tab.classList.remove('duxton-text-heading', 'text-duxton-content-default');
+                });
+
+                // Add active class to selected tab
+                let activeTab;
+                switch(newTab) {
+                    case 'preparing':
+                        activeTab = preparingTab;
+                        break;
+                    case 'ready':
+                        activeTab = readyTab;
+                        break;
+                    case 'upcoming':
+                        activeTab = upcomingTab;
+                        break;
+                    case 'history':
+                        activeTab = historyTab;
+                        break;
+                }
+
+                if (activeTab) {
+                    activeTab.classList.add('tab-active');
+                    activeTab.classList.remove('duxton-text-body', 'text-duxton-content-dim');
+                    activeTab.classList.add('duxton-text-heading', 'text-duxton-content-default');
+                }
+
+                currentTab = newTab;
+                populateOrders();
+            }
+
+            // Function to move order to ready tab
+            function moveOrderToReady(orderId) {
+                const order = orders.find(o => o.id === orderId);
+                if (order) {
+                    order.tab = 'ready';
+                    updateTabCounts();
+                    
+                    // Go back to order list and switch to ready tab
+                    showOrdersList();
+                    switchToTab('ready');
+                }
+            }
+
+            // Function to create an order card HTML based on its "viewed" state
+            function createOrderCard(order) {
+                let buttonHtml = '';
+                
+                if (order.tab === 'preparing') {
+                    // In preparing tab: show "Begin Delivery" for viewed orders, "View Order" for unviewed
+                    buttonHtml = order.viewed
+                        ? `<button class="duxton-button-primary py-2.5 px-4 duxton-shadow-button duxton-text-body text-duxton-callout-03">
+                               Begin Delivery
+                           </button>`
+                        : `<button class="bg-teal-50 text-teal-700 duxton-text-body text-duxton-callout-03 font-semibold py-2.5 px-4 rounded-2xl duxton-shadow-button border border-teal-100">
+                               View Order
+                           </button>`;
+                } else if (order.tab === 'ready') {
+                    // In ready tab: no CTA button
+                    buttonHtml = '';
+                } else {
+                    // For other tabs: show "View Order"
+                    buttonHtml = `<button class="bg-teal-50 text-teal-700 duxton-text-body text-duxton-callout-03 font-semibold py-2.5 px-4 rounded-2xl duxton-shadow-button border border-teal-100">
+                           View Order
+                       </button>`;
+                }
+
+                const newTagHtml = order.viewed 
+                    ? '' 
+                    : `<span class="bg-duxton-status-alert text-duxton-content-on-brand duxton-text-body text-duxton-metadata-02 font-bold px-2 py-1 rounded-md">${order.status.toUpperCase()}</span>`;
+
+                const paymentMethodHtml = order.paymentMethod 
+                    ? ` • ${order.paymentMethod}`
+                    : '';
+
+                return `
+                    <div class="duxton-card p-4 duxton-shadow-card cursor-pointer" data-order-id="${order.id}">
+                        <div class="flex items-start ${buttonHtml ? 'justify-between' : 'justify-start'} mb-3">
+                            <div class="flex items-center space-x-3">
+                                <h2 class="duxton-text-heading text-duxton-heading-05 text-duxton-content-default">${order.id}</h2>
+                                ${newTagHtml}
+                            </div>
+                            ${buttonHtml}
+                        </div>
+                        <div>
+                            <p class="duxton-text-body text-duxton-body-01-bolder text-duxton-content-default mb-1">${order.tab === 'ready' ? 'Driver assigned' : `Ready in: ${order.readyTime} business day`}</p>
+                            <p class="duxton-text-body text-duxton-body-02 text-duxton-content-dim">${order.itemsCount} ${order.itemsCount > 1 ? 'items' : 'item'}${paymentMethodHtml}</p>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Function to populate the order list
+            function populateOrders() {
+                const tabOrders = getOrdersForTab(currentTab);
+                if (tabOrders.length === 0) {
+                    orderListContainer.innerHTML = `
+                        <div class="flex flex-col items-center justify-center py-12 text-center">
+                            <div class="w-16 h-16 bg-duxton-bg-alt rounded-full flex items-center justify-center mb-4">
+                                <svg class="w-8 h-8 text-duxton-content-dim" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                                </svg>
+                            </div>
+                            <p class="duxton-text-body text-duxton-body-01 text-duxton-content-dim">No orders in ${currentTab}</p>
+                        </div>
+                    `;
+                } else {
+                    orderListContainer.innerHTML = tabOrders.map(createOrderCard).join('');
+                }
+            }
+
+            // Function to show order details
+            function showDetails(orderId) {
+                const order = orders.find(o => o.id === orderId);
+                if (!order) return;
+
+                // Mark the order as "viewed" to change its state
+                order.viewed = true;
+
+                // Populate header
+                detailsOrderId.textContent = order.id;
+                
+                // Update status badge based on tab
+                const statusText = order.tab.charAt(0).toUpperCase() + order.tab.slice(1);
+                detailsStatusBadge.textContent = statusText;
+
+                // Populate items
+                detailsItemsContainer.innerHTML = order.items.map(item => `
+                    <div class="flex justify-between items-center py-2">
+                        <div class="flex items-center space-x-3">
+                            <span class="duxton-text-body text-duxton-callout-03 bg-duxton-bg-alt text-duxton-content-dim w-7 h-7 flex items-center justify-center rounded-lg">${item.quantity}x</span>
+                            <span class="duxton-text-body text-duxton-body-01 text-duxton-content-default">${item.name}</span>
+                        </div>
+                        <span class="duxton-text-body text-duxton-body-01-bolder text-duxton-content-default">$${(item.price * item.quantity).toFixed(2)}</span>
+                    </div>
+                `).join('');
+
+                // Calculate and populate totals
+                const subtotal = order.items.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+                const deliveryFee = 5.99;
+                const total = subtotal + deliveryFee;
+
+                detailsSubtotal.textContent = `$${subtotal.toFixed(2)}`;
+                detailsDeliveryFee.textContent = `$${deliveryFee.toFixed(2)}`;
+                detailsTotal.textContent = `$${total.toFixed(2)}`;
+                
+                // Switch screens
+                ordersScreen.classList.add('hidden');
+                detailsScreen.classList.remove('hidden');
+                detailsScreen.classList.add('flex');
+            }
+            
+            // Function to go back to the list
+            function showOrdersList() {
+                detailsScreen.classList.add('hidden');
+                detailsScreen.classList.remove('flex');
+                ordersScreen.classList.remove('hidden');
+                
+                // Re-populate the order list to reflect the button change
+                populateOrders();
+            }
+
+            // --- EVENT LISTENERS ---
+            
+            // Tab switching
+            preparingTab.addEventListener('click', () => switchToTab('preparing'));
+            readyTab.addEventListener('click', () => switchToTab('ready'));
+            upcomingTab.addEventListener('click', () => switchToTab('upcoming'));
+            historyTab.addEventListener('click', () => switchToTab('history'));
+            
+            // Order card clicks
+            orderListContainer.addEventListener('click', (e) => {
+                // Check if the clicked element is a "Begin Delivery" button
+                const beginDeliveryBtn = e.target.closest('button.duxton-button-primary');
+                if (beginDeliveryBtn) {
+                    // Get the order ID from the card
+                    const card = beginDeliveryBtn.closest('[data-order-id]');
+                    if (card) {
+                        // Directly move to ready tab without showing details
+                        moveOrderToReady(card.dataset.orderId);
+                        return; // Stop event propagation
+                    }
+                }
+                
+                // For other clicks (including "View Order" button), show details
+                const card = e.target.closest('[data-order-id]');
+                if (card) {
+                    showDetails(card.dataset.orderId);
+                }
+            });
+
+            // Detail screen navigation
+            backButton.addEventListener('click', showOrdersList);
+            cancelOrderButton.addEventListener('click', () => {
+                // For the demo, cancel also returns to the list without changing the state
+                detailsScreen.classList.add('hidden');
+                detailsScreen.classList.remove('flex');
+                ordersScreen.classList.remove('hidden');
+            });
+
+            // Action buttons - move order to ready tab
+            beginDeliveryButton.addEventListener('click', () => {
+                const orderId = detailsOrderId.textContent;
+                moveOrderToReady(orderId);
+            });
+
+            requestGrabExpressButton.addEventListener('click', () => {
+                const orderId = detailsOrderId.textContent;
+                moveOrderToReady(orderId);
+            });
+
+            // --- INITIALIZATION ---
+            updateTabCounts();
+            populateOrders();
+        });
+    </script>
+</body>
+</html>
