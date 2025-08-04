@@ -217,7 +217,6 @@
                         <span>Ready</span>
                         <span id="ready-count" class="bg-duxton-status-alert text-duxton-content-on-brand text-duxton-metadata-02 font-bold w-5 h-5 flex items-center justify-center rounded-full hidden">0</span>
                     </button>
-                    <button id="upcoming-tab" class="pb-2 duxton-text-body text-duxton-callout-01 text-duxton-content-dim">Upcoming</button>
                     <button id="history-tab" class="pb-2 duxton-text-body text-duxton-callout-01 text-duxton-content-dim">History</button>
                 </div>
             </nav>
@@ -269,68 +268,105 @@
         <!-- Order Details Screen -->
         <div id="details-screen" class="hidden flex-col h-full bg-duxton-bg-default">
             <!-- Header -->
-            <header class="px-4 py-4 flex items-center space-x-4 border-b border-gray-100 bg-duxton-bg-default">
-                <button id="back-button" class="p-2 -ml-2">
-                    <svg class="w-6 h-6 text-duxton-content-default" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-                    </svg>
-                </button>
-                <h1 class="duxton-text-heading text-duxton-heading-05 text-duxton-content-default">Order Details</h1>
+            <header class="px-4 py-4 flex items-center justify-between bg-duxton-bg-default">
+                <div class="flex items-center space-x-4">
+                    <button id="back-button" class="p-2 -ml-2">
+                        <svg class="w-6 h-6 text-duxton-content-default" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                        </svg>
+                    </button>
+                    <h1 id="details-order-id" class="duxton-text-heading text-duxton-heading-03 text-duxton-content-default">GD-415</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button class="p-2">
+                        <svg class="w-6 h-6 text-duxton-content-default" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2zM16 10a4 4 0 11-8 0 4 4 0 018 0z"/>
+                        </svg>
+                    </button>
+                    <button class="p-2">
+                        <svg class="w-6 h-6 text-duxton-content-default" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                        </svg>
+                    </button>
+                    <button class="p-2">
+                        <svg class="w-6 h-6 text-duxton-content-default" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                        </svg>
+                    </button>
+                    <button class="p-2">
+                        <svg class="w-6 h-6 text-duxton-content-default" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"/>
+                        </svg>
+                    </button>
+                </div>
             </header>
             
             <!-- Details Content -->
-            <main class="flex-1 bg-duxton-bg-alt overflow-y-auto p-4 custom-scrollbar">
-                <div class="duxton-card p-4 duxton-shadow-card">
-                    <div class="flex justify-between items-start mb-4">
-                        <div>
-                            <h2 id="details-order-id" class="duxton-text-heading text-duxton-heading-03 text-duxton-content-default mb-1">GD-415</h2>
-                            <p class="duxton-text-body text-duxton-body-02 text-duxton-content-dim">From: Tech Supply Co.</p>
+            <main class="flex-1 bg-duxton-bg-alt overflow-y-auto custom-scrollbar">
+                <!-- Delivery Address Section -->
+                <div class="bg-duxton-bg-default px-4 py-4">
+                    <div class="flex justify-between items-start">
+                        <div class="flex-1">
+                            <h2 class="duxton-text-body text-duxton-body-01-bolder text-duxton-content-default mb-1">Tech Supply Co.</h2>
+                            <p class="duxton-text-body text-duxton-body-02 text-duxton-content-dim">123 Business Drive, Singapore, 123456</p>
+                            <p class="duxton-text-body text-duxton-body-02 text-duxton-content-dim">(#01-01)</p>
                         </div>
-                                                 <span id="details-status-badge" class="duxton-text-body text-duxton-callout-03 text-duxton-brand-primary bg-duxton-brand-primary-softest px-3 py-1 rounded-full">Preparing</span>
+                        <span class="duxton-text-body text-duxton-body-02 text-duxton-content-dim">1.5 km away</span>
                     </div>
-                    <div class="border-t border-gray-100 my-4"></div>
-                    <div id="details-items-container" class="space-y-3">
-                        <!-- Item details will be injected here -->
+                </div>
+
+                <!-- GrabExpress Section -->
+                <div class="bg-duxton-bg-default px-4 py-4 border-t border-gray-100">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 bg-duxton-brand-primary-soft rounded-lg flex items-center justify-center">
+                                <svg class="w-6 h-6 text-duxton-brand-primary" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zM8 6a2 2 0 114 0v1H8V6z" clip-rule="evenodd"/>
+                                </svg>
+                            </div>
+                            <div class="flex-1">
+                                <p class="duxton-text-body text-duxton-body-01 text-duxton-content-default">Get a GrabExpress driver to deliver for</p>
+                                <p class="duxton-text-body text-duxton-body-01-bolder text-duxton-content-default">$0.00</p>
+                            </div>
+                        </div>
+                        <button id="request-grabexpress-button" class="duxton-button-secondary px-6 py-2 duxton-shadow-button duxton-text-body text-duxton-callout-02">
+                            Request
+                        </button>
                     </div>
-                    <div class="border-t border-gray-100 my-4"></div>
-                    <div class="space-y-2">
-                        <div class="flex justify-between items-center">
-                            <span class="duxton-text-body text-duxton-body-02 text-duxton-content-dim">Subtotal</span>
-                            <span id="details-subtotal" class="duxton-text-body text-duxton-body-02-bolder text-duxton-content-default">$0.00</span>
+                </div>
+
+                <!-- Order Items Section -->
+                <div class="px-4 py-4">
+                    <div class="duxton-card p-4 duxton-shadow-card">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="duxton-text-body text-duxton-body-01-bolder text-duxton-content-default mb-1"><span id="details-items-count">4</span> items for Jane Doe</h3>
+                            </div>
                         </div>
-                        <div class="flex justify-between items-center">
-                            <span class="duxton-text-body text-duxton-body-02 text-duxton-content-dim">Delivery Fee</span>
-                            <span id="details-delivery-fee" class="duxton-text-body text-duxton-body-02-bolder text-duxton-content-default">$5.99</span>
-                        </div>
-                         <div class="flex justify-between items-center mt-3 pt-3 border-t border-gray-200">
-                            <span class="duxton-text-body text-duxton-body-01-bolder text-duxton-content-default">Total</span>
-                            <span id="details-total" class="duxton-text-body text-duxton-body-01-bolder text-duxton-content-default">$0.00</span>
+                        
+                        <div class="space-y-4">
+                            <div id="details-items-container" class="space-y-3">
+                                <!-- Item details will be injected here -->
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="duxton-card p-4 duxton-shadow-card mt-3">
-                     <h3 class="duxton-text-body text-duxton-callout-02 text-duxton-content-default mb-2">Customer</h3>
-                     <p class="duxton-text-body text-duxton-body-01-bolder text-duxton-content-default">Jane Doe</p>
-                     <p class="duxton-text-body text-duxton-body-02 text-duxton-content-dim">+1 987 654 3210</p>
-                </div>
-                
                 <!-- Cancel Button (inside scrollable area) -->
-                <div class="mt-4">
+                <div class="px-4 pb-4">
                     <button id="cancel-order-button" class="w-full bg-duxton-bg-default text-duxton-status-alert duxton-text-body text-duxton-callout-01 py-3 rounded-2xl border border-red-200 duxton-shadow-button">
                         Cancel Order
                     </button>
                 </div>
             </main>
 
-            <!-- Sticky Footer with CTAs -->
-            <footer class="p-4 bg-duxton-bg-default border-t border-gray-100 space-y-3">
-                <button class="duxton-button-primary w-full py-4 duxton-shadow-elevated duxton-text-body text-duxton-callout-01">
-                    Begin Delivery
-                </button>
-                <button class="duxton-button-secondary w-full py-4 duxton-shadow-button duxton-text-body text-duxton-callout-01">
-                    Request GrabExpress
-                </button>
+            <!-- Sticky Footer with Sent for Delivery -->
+            <footer class="bg-duxton-bg-default border-t border-gray-100">
+                <div class="p-4">
+                    <button id="sent-for-delivery-button" class="duxton-button-primary w-full py-4 duxton-shadow-elevated duxton-text-body text-duxton-callout-01">
+                        Sent for Delivery
+                    </button>
+                </div>
             </footer>
         </div>
 
@@ -383,26 +419,22 @@
             const detailsScreen = document.getElementById('details-screen');
             const orderListContainer = document.getElementById('order-list-container');
             const backButton = document.getElementById('back-button');
-            const cancelOrderButton = document.getElementById('cancel-order-button');
             const detailsOrderId = document.getElementById('details-order-id');
             const detailsItemsContainer = document.getElementById('details-items-container');
-            const detailsSubtotal = document.getElementById('details-subtotal');
-            const detailsDeliveryFee = document.getElementById('details-delivery-fee');
-            const detailsTotal = document.getElementById('details-total');
-            const detailsStatusBadge = document.getElementById('details-status-badge');
+            const detailsItemsCount = document.getElementById('details-items-count');
             
             // Tab elements
             const preparingTab = document.getElementById('preparing-tab');
             const readyTab = document.getElementById('ready-tab');
-            const upcomingTab = document.getElementById('upcoming-tab');
             const historyTab = document.getElementById('history-tab');
             const preparingCount = document.getElementById('preparing-count');
             const readyCount = document.getElementById('ready-count');
             const bottomNavCount = document.getElementById('bottom-nav-count');
             
             // Action buttons in details screen
-            const beginDeliveryButton = document.querySelector('footer button.duxton-button-primary');
-            const requestGrabExpressButton = document.querySelector('footer button.duxton-button-secondary');
+            const sentForDeliveryButton = document.getElementById('sent-for-delivery-button');
+            const cancelOrderButton = document.getElementById('cancel-order-button');
+            const requestGrabexpressButton = document.getElementById('request-grabexpress-button');
 
             // --- FUNCTIONS ---
 
@@ -432,7 +464,7 @@
             // Function to switch tabs
             function switchToTab(newTab) {
                 // Remove active class from all tabs
-                const allTabs = [preparingTab, readyTab, upcomingTab, historyTab];
+                const allTabs = [preparingTab, readyTab, historyTab];
                 allTabs.forEach(tab => {
                     tab.classList.remove('tab-active');
                     tab.classList.add('duxton-text-body', 'text-duxton-content-dim');
@@ -447,9 +479,6 @@
                         break;
                     case 'ready':
                         activeTab = readyTab;
-                        break;
-                    case 'upcoming':
-                        activeTab = upcomingTab;
                         break;
                     case 'history':
                         activeTab = historyTab;
@@ -557,29 +586,29 @@
                 // Populate header
                 detailsOrderId.textContent = order.id;
                 
-                // Update status badge based on tab
-                const statusText = order.tab.charAt(0).toUpperCase() + order.tab.slice(1);
-                detailsStatusBadge.textContent = statusText;
+                // Update items count
+                detailsItemsCount.textContent = order.items.length;
 
-                // Populate items
-                detailsItemsContainer.innerHTML = order.items.map(item => `
-                    <div class="flex justify-between items-center py-2">
-                        <div class="flex items-center space-x-3">
-                            <span class="duxton-text-body text-duxton-callout-03 bg-duxton-bg-alt text-duxton-content-dim w-7 h-7 flex items-center justify-center rounded-lg">${item.quantity}x</span>
-                            <span class="duxton-text-body text-duxton-body-01 text-duxton-content-default">${item.name}</span>
+                // Populate items with the new format
+                detailsItemsContainer.innerHTML = order.items.map((item) => {
+                    const itemTotal = item.price * item.quantity;
+
+                    return `
+                        <div class="border-b border-gray-100 pb-3 mb-3 last:border-b-0 last:pb-0 last:mb-0">
+                            <div class="flex justify-between items-start">
+                                <div class="flex-1">
+                                    <div class="flex items-start space-x-3">
+                                        <span class="duxton-text-body text-duxton-callout-03 bg-duxton-bg-alt text-duxton-content-dim w-7 h-7 flex items-center justify-center rounded-lg mt-1">${item.quantity}x</span>
+                                        <div class="flex-1">
+                                            <span class="duxton-text-body text-duxton-body-01-bolder text-duxton-content-default">${item.name}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="duxton-text-body text-duxton-body-01-bolder text-duxton-content-default">$${itemTotal.toFixed(2)}</span>
+                            </div>
                         </div>
-                        <span class="duxton-text-body text-duxton-body-01-bolder text-duxton-content-default">$${(item.price * item.quantity).toFixed(2)}</span>
-                    </div>
-                `).join('');
-
-                // Calculate and populate totals
-                const subtotal = order.items.reduce((acc, item) => acc + (item.price * item.quantity), 0);
-                const deliveryFee = 5.99;
-                const total = subtotal + deliveryFee;
-
-                detailsSubtotal.textContent = `$${subtotal.toFixed(2)}`;
-                detailsDeliveryFee.textContent = `$${deliveryFee.toFixed(2)}`;
-                detailsTotal.textContent = `$${total.toFixed(2)}`;
+                    `;
+                }).join('');
                 
                 // Switch screens
                 ordersScreen.classList.add('hidden');
@@ -602,7 +631,6 @@
             // Tab switching
             preparingTab.addEventListener('click', () => switchToTab('preparing'));
             readyTab.addEventListener('click', () => switchToTab('ready'));
-            upcomingTab.addEventListener('click', () => switchToTab('upcoming'));
             historyTab.addEventListener('click', () => switchToTab('history'));
             
             // Order card clicks
@@ -630,18 +658,16 @@
             backButton.addEventListener('click', showOrdersList);
             cancelOrderButton.addEventListener('click', () => {
                 // For the demo, cancel also returns to the list without changing the state
-                detailsScreen.classList.add('hidden');
-                detailsScreen.classList.remove('flex');
-                ordersScreen.classList.remove('hidden');
+                showOrdersList();
             });
 
             // Action buttons - move order to ready tab
-            beginDeliveryButton.addEventListener('click', () => {
+            sentForDeliveryButton.addEventListener('click', () => {
                 const orderId = detailsOrderId.textContent;
                 moveOrderToReady(orderId);
             });
 
-            requestGrabExpressButton.addEventListener('click', () => {
+            requestGrabexpressButton.addEventListener('click', () => {
                 const orderId = detailsOrderId.textContent;
                 moveOrderToReady(orderId);
             });
