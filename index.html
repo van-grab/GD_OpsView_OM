@@ -211,11 +211,11 @@
                 <div class="flex items-center space-x-8">
                     <button id="preparing-tab" class="tab-active pb-2 flex items-center space-x-2">
                         <span class="duxton-text-heading text-duxton-callout-01 text-duxton-content-default">Preparing</span>
-                        <span id="preparing-count" class="bg-duxton-status-alert text-duxton-content-on-brand text-duxton-metadata-02 font-bold w-5 h-5 flex items-center justify-center rounded-full">5</span>
+                        <span id="preparing-count" class="bg-duxton-status-alert text-duxton-content-on-brand text-duxton-metadata-02 font-bold w-5 h-5 flex items-center justify-center rounded-full">3</span>
                     </button>
                     <button id="ready-tab" class="pb-2 duxton-text-body text-duxton-callout-01 text-duxton-content-dim flex items-center space-x-2">
                         <span>Ready</span>
-                        <span id="ready-count" class="bg-duxton-status-alert text-duxton-content-on-brand text-duxton-metadata-02 font-bold w-5 h-5 flex items-center justify-center rounded-full hidden">0</span>
+                        <span id="ready-count" class="bg-duxton-status-alert text-duxton-content-on-brand text-duxton-metadata-02 font-bold w-5 h-5 flex items-center justify-center rounded-full">1</span>
                     </button>
                     <button id="history-tab" class="pb-2 duxton-text-body text-duxton-callout-01 text-duxton-content-dim">History</button>
                 </div>
@@ -236,7 +236,7 @@
                         <span class="duxton-text-body text-duxton-metadata-01">Home</span>
                     </div>
                     <div class="text-center py-2 px-3 text-duxton-brand-primary relative">
-                        <span id="bottom-nav-count" class="absolute -top-1 -right-0 bg-duxton-status-alert text-duxton-content-on-brand text-duxton-metadata-02 font-bold w-4 h-4 flex items-center justify-center rounded-full">5</span>
+                        <span id="bottom-nav-count" class="absolute -top-1 -right-0 bg-duxton-status-alert text-duxton-content-on-brand text-duxton-metadata-02 font-bold w-4 h-4 flex items-center justify-center rounded-full">3</span>
                         <svg class="w-6 h-6 mx-auto mb-1" fill="currentColor" viewBox="0 0 20 20">
                             <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/>
                             <path fill-rule="evenodd" d="M4 5a2 2 0 012-2h8a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h.01a1 1 0 100-2H10zm3 0a1 1 0 000 2h.01a1 1 0 100-2H13zM7 12a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h.01a1 1 0 100-2H10zm3 0a1 1 0 100 2h.01a1 1 0 100-2H13z" clip-rule="evenodd"/>
@@ -316,7 +316,7 @@
                 </div>
 
                 <!-- GrabExpress Section -->
-                <div class="bg-duxton-bg-default px-4 py-4 border-t border-gray-100">
+                <div id="grabexpress-section" class="bg-duxton-bg-default px-4 py-4 border-t border-gray-100">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center space-x-3">
                             <div class="w-10 h-10 bg-duxton-brand-primary-soft rounded-lg flex items-center justify-center">
@@ -353,7 +353,7 @@
                 </div>
 
                 <!-- Cancel Button (inside scrollable area) -->
-                <div class="px-4 pb-4">
+                <div id="cancel-button-section" class="px-4 pb-4">
                     <button id="cancel-order-button" class="w-full bg-duxton-bg-default text-duxton-status-alert duxton-text-body text-duxton-callout-01 py-3 rounded-2xl border border-red-200 duxton-shadow-button">
                         Cancel Order
                     </button>
@@ -361,7 +361,7 @@
             </main>
 
             <!-- Sticky Footer with Sent for Delivery -->
-            <footer class="bg-duxton-bg-default border-t border-gray-100">
+            <footer id="sticky-footer" class="bg-duxton-bg-default border-t border-gray-100">
                 <div class="p-4">
                     <button id="sent-for-delivery-button" class="duxton-button-primary w-full py-4 duxton-shadow-elevated duxton-text-body text-duxton-callout-01">
                         Sent for Delivery
@@ -384,7 +384,7 @@
                       { name: 'USB Cable', price: 12.99, quantity: 1 },
                   ]
                 },
-                { id: 'GD-652', itemsCount: 1, status: 'New', viewed: false, readyTime: '1', paymentMethod: 'installment', tab: 'preparing',
+                { id: 'GD-652', itemsCount: 1, status: 'New', viewed: false, readyTime: '1', paymentMethod: 'installment', tab: 'ready',
                   items: [ 
                       { name: 'Prepaid 5G SIM Card', price: 15.00, quantity: 1 },
                   ]
@@ -399,7 +399,7 @@
                       { name: 'Cable Management Tray', price: 18.99, quantity: 1 },
                   ]
                 },
-                { id: 'GD-935', itemsCount: 1, status: 'New', viewed: false, readyTime: '3', paymentMethod: 'installment', tab: 'preparing',
+                { id: 'GD-935', itemsCount: 1, status: 'New', viewed: false, readyTime: '3', paymentMethod: 'installment', tab: 'history',
                   items: [ { name: 'Cat6 Ethernet Cable (5m)', price: 9.99, quantity: 1 } ]
                 },
                 { id: 'GD-991', itemsCount: 3, status: 'New', viewed: false, readyTime: '3', paymentMethod: 'installment', tab: 'preparing',
@@ -508,6 +508,19 @@
                 }
             }
 
+            // Function to move order to history tab
+            function moveOrderToHistory(orderId) {
+                const order = orders.find(o => o.id === orderId);
+                if (order) {
+                    order.tab = 'history';
+                    updateTabCounts();
+                    
+                    // Go back to order list and switch to history tab
+                    showOrdersList();
+                    switchToTab('history');
+                }
+            }
+
             // Function to create an order card HTML based on its "viewed" state
             function createOrderCard(order) {
                 let buttonHtml = '';
@@ -522,16 +535,16 @@
                                View Order
                            </button>`;
                 } else if (order.tab === 'ready') {
-                    // In ready tab: no CTA button
-                    buttonHtml = '';
-                } else {
-                    // For other tabs: show "View Order"
-                    buttonHtml = `<button class="bg-teal-50 text-teal-700 duxton-text-body text-duxton-callout-03 font-semibold py-2.5 px-4 rounded-2xl duxton-shadow-button border border-teal-100">
-                           View Order
+                    // In ready tab: show "Complete" button
+                    buttonHtml = `<button class="duxton-button-primary py-2.5 px-4 duxton-shadow-button duxton-text-body text-duxton-callout-03" data-action="complete">
+                           Complete
                        </button>`;
+                } else {
+                    // For history tab: no button
+                    buttonHtml = '';
                 }
 
-                const newTagHtml = order.viewed 
+                const newTagHtml = (order.viewed || order.tab === 'history') 
                     ? '' 
                     : `<span class="bg-duxton-status-alert text-duxton-content-on-brand duxton-text-body text-duxton-metadata-02 font-bold px-2 py-1 rounded-md">${order.status.toUpperCase()}</span>`;
 
@@ -549,7 +562,10 @@
                             ${buttonHtml}
                         </div>
                         <div>
-                            <p class="duxton-text-body text-duxton-body-01-bolder text-duxton-content-default mb-1">${order.tab === 'ready' ? 'Driver assigned' : `Ready in: ${order.readyTime} business day`}</p>
+                            ${order.tab === 'history' 
+                                ? `<p class="duxton-text-body text-duxton-body-01-bolder text-duxton-content-default mb-1">Completed</p>`
+                                : `<p class="duxton-text-body text-duxton-body-01-bolder text-duxton-content-default mb-1">${order.tab === 'ready' ? 'Driver assigned' : `Ready in: ${order.readyTime} business day`}</p>`
+                            }
                             <p class="duxton-text-body text-duxton-body-02 text-duxton-content-dim">${order.itemsCount} ${order.itemsCount > 1 ? 'items' : 'item'}${paymentMethodHtml}</p>
                         </div>
                     </div>
@@ -609,6 +625,23 @@
                         </div>
                     `;
                 }).join('');
+
+                // Hide/show sections based on order tab
+                const grabExpressSection = document.getElementById('grabexpress-section');
+                const cancelButtonSection = document.getElementById('cancel-button-section');
+                const stickyFooter = document.getElementById('sticky-footer');
+
+                if (order.tab === 'history') {
+                    // Hide GrabExpress section, Cancel button, and sticky footer for history orders
+                    if (grabExpressSection) grabExpressSection.style.display = 'none';
+                    if (cancelButtonSection) cancelButtonSection.style.display = 'none';
+                    if (stickyFooter) stickyFooter.style.display = 'none';
+                } else {
+                    // Show all sections for non-history orders
+                    if (grabExpressSection) grabExpressSection.style.display = 'block';
+                    if (cancelButtonSection) cancelButtonSection.style.display = 'block';
+                    if (stickyFooter) stickyFooter.style.display = 'block';
+                }
                 
                 // Switch screens
                 ordersScreen.classList.add('hidden');
@@ -635,11 +668,23 @@
             
             // Order card clicks
             orderListContainer.addEventListener('click', (e) => {
-                // Check if the clicked element is a "Sent for Delivery" button
-                const beginDeliveryBtn = e.target.closest('button.duxton-button-primary');
-                if (beginDeliveryBtn) {
+                // Check if the clicked element is a "Complete" button
+                const completeBtn = e.target.closest('button[data-action="complete"]');
+                if (completeBtn) {
                     // Get the order ID from the card
-                    const card = beginDeliveryBtn.closest('[data-order-id]');
+                    const card = completeBtn.closest('[data-order-id]');
+                    if (card) {
+                        // Move order to history tab
+                        moveOrderToHistory(card.dataset.orderId);
+                        return; // Stop event propagation
+                    }
+                }
+
+                // Check if the clicked element is a "Sent for Delivery" button
+                const sentForDeliveryBtn = e.target.closest('button.duxton-button-primary');
+                if (sentForDeliveryBtn && !sentForDeliveryBtn.hasAttribute('data-action')) {
+                    // Get the order ID from the card
+                    const card = sentForDeliveryBtn.closest('[data-order-id]');
                     if (card) {
                         // Directly move to ready tab without showing details
                         moveOrderToReady(card.dataset.orderId);
@@ -679,4 +724,3 @@
     </script>
 </body>
 </html>
-
