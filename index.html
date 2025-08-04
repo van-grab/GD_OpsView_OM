@@ -513,10 +513,10 @@
                 let buttonHtml = '';
                 
                 if (order.tab === 'preparing') {
-                    // In preparing tab: show "Begin Delivery" for viewed orders, "View Order" for unviewed
+                    // In preparing tab: show "Sent for Delivery" for viewed orders, "View Order" for unviewed
                     buttonHtml = order.viewed
                         ? `<button class="duxton-button-primary py-2.5 px-4 duxton-shadow-button duxton-text-body text-duxton-callout-03">
-                               Begin Delivery
+                               Sent for Delivery
                            </button>`
                         : `<button class="bg-teal-50 text-teal-700 duxton-text-body text-duxton-callout-03 font-semibold py-2.5 px-4 rounded-2xl duxton-shadow-button border border-teal-100">
                                View Order
@@ -635,7 +635,7 @@
             
             // Order card clicks
             orderListContainer.addEventListener('click', (e) => {
-                // Check if the clicked element is a "Begin Delivery" button
+                // Check if the clicked element is a "Sent for Delivery" button
                 const beginDeliveryBtn = e.target.closest('button.duxton-button-primary');
                 if (beginDeliveryBtn) {
                     // Get the order ID from the card
@@ -679,3 +679,4 @@
     </script>
 </body>
 </html>
+
